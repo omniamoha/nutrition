@@ -198,7 +198,7 @@ max_page = (total_rows - 1) // page_size
 start = st.session_state.page * page_size
 end = start + page_size
 
-display_cols = ["food_name"]
+display_cols = ["food_name","name_ar"]
 if medical_only:
     display_cols.append("Medical_Advice")
 else:
