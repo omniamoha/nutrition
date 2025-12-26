@@ -18,14 +18,22 @@ st.set_page_config(page_title="Smart AI Nutrition", layout="wide")
 # -------------------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("normalized.csv")
+    encodings = ["utf-8-sig", "cp1256", "windows-1252", "latin1"]
+    for enc in encodings:
+        try:
+            df = pd.read_csv("normalized.csv", encoding=enc)
+            return df
+        except UnicodeDecodeError:
+            continue
+    st.error("❌ Cannot read normalized.csv بسبب مشكلة ترميز")
+    st.stop()
 
     for col in ["food_name", "name", "name_en", "Food", "food"]:
         if col in df.columns:
-            df.rename(columns={col: "food_name"}, inplace=True)
+            df.rename(columns={col: "name_en"}, inplace=True)
             break
 
-    if "food_name" not in df.columns:
+    if "name_en" not in df.columns:
         raise ValueError("Food name column not found")
 
     df.fillna(0, inplace=True)
@@ -198,7 +206,7 @@ max_page = (total_rows - 1) // page_size
 start = st.session_state.page * page_size
 end = start + page_size
 
-display_cols = ["food_name","name_ar"]
+display_cols = ["name_en","name_ar"]
 if medical_only:
     display_cols.append("Medical_Advice")
 else:
