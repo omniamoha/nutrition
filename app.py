@@ -6,8 +6,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-from modules.hormone_engine import process_hormone
-from modules.hormone_config import HORMONE_CONFIG
+from hormone_engine import process_hormone
+from hormone_config import HORMONE_CONFIG
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
